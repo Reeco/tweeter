@@ -5,7 +5,7 @@ require "net/http"
 require "json"
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, "sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
+DataMapper.setup(:default, ENV["DATABASE_URL"]||"sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
 
 class Tweet
    include DataMapper::Resource
