@@ -1,6 +1,6 @@
 require "rubygems"
 require "bundler/setup"
-require "timeline_sq"
+require "src/timeline_sq"
 
 get '/' do   
    haml :tweeter
