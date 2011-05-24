@@ -10,10 +10,12 @@ get '/fetching_tweets' do
    screen = params[:screen_name]
    if screen.nil?
       haml :error
-   DataMapper.auto_migrate!
-   timeline = Timeline.new(screen)
-   timeline.fetch_tweets
-   redirect '/search'
+   else
+      DataMapper.auto_migrate!
+      timeline = Timeline.new(screen)
+      timeline.fetch_tweets
+      redirect '/search'
+   end
 end
 
 get '/search' do
