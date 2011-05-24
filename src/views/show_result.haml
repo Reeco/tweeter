@@ -2,9 +2,12 @@
    Tweeter Search Result
 %hr
 
-- if @tweets
+- if @tweets 
    - @tweets.each do |i|
       %p= i.created_at.to_s + " ---> " + i.text
 - else
-   %p
-      ERROR! Please select the type and fill keyword box properly
+   - if @err.nil?
+      %p
+         No match found!!
+   - else
+      %p= @err

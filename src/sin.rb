@@ -31,11 +31,17 @@ get '/search/searching' do
    if typ.eql?("text")
       @tweets = Tweet.all(:text.like => "%#{key}%")
    elsif typ.eql?("created_at")
-      date = Date.parse(key)      
-      puts date
-      from_time = DateTime.new(date.year, date.month, date.day, 0, 0, 0)
-      to_time   = DateTime.new(date.year, date.month, date.day, 23, 59, 59)
-      @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)
+      if key.empty?
+         @err = "ERROR! Date cannot be empty."
+      else
+         date = Date.parse(key)      
+         puts date
+         from_time = DateTime.new(date.year, date.month, date.day, 0, 0, 0)
+         to_time   = DateTime.new(date.year, date.month, date.day, 23, 59, 59)
+         @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)
+      end
+   else
+      @error = "ERROR! Type not selected."
    end
    haml :show_result
 end
