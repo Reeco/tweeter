@@ -2,11 +2,11 @@
    Tweeter Search Result
 %hr
 
-- if @tweets 
+- if !@tweets.empty? 
    - @tweets.each do |i|
       %p= i.created_at.to_s + " ---> " + i.text
 - else
-   - if @err.nil?
+   - if @err.empty?
       %p
          No match found!!
    - else

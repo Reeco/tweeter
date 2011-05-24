@@ -29,7 +29,11 @@ get '/search/searching' do
    typ = params[:typ]
    key = params[:key]
    if typ.eql?("text")
-      @tweets = Tweet.all(:text.like => "%#{key}%")
+      if key.empty?
+         @err = "ERROR! Please enter the keyword."
+      else
+         @tweets = Tweet.all(:text.like => "%#{key}%")
+      end
    elsif typ.eql?("created_at")
       if key.empty?
          @err = "ERROR! Date cannot be empty."
