@@ -9,7 +9,7 @@ end
 get '/fetching_tweets' do
    screen = params[:screen_name]
    if screen.empty?
-      haml :error
+      haml :err
    else
       DataMapper.auto_migrate!
       timeline = Timeline.new(screen)
