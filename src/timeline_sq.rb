@@ -13,12 +13,12 @@ class Tweet
    property :text, String, :length => 200
    property :contributors, String, :required => false
    property :retweeted, Boolean, :required => false
-   property :in_reply_to_user_id, Integer, :required => false
-   property :in_reply_to_status_id, Integer, :required => false
+   property :in_reply_to_user_id_str, String, :required => false
+   property :in_reply_to_status_id_str, String, :required => false
    property :source, String, :required => false, :length => 200
    property :favorited, Boolean, :required => false
    property :retweet_count, Integer
-   property :id, Integer, :key => true
+   property :id_str, String, :key => true
    property :in_reply_to_screen_name, String, :required => false
    belongs_to :coordinate, :required => false
    belongs_to :place, :required => false
@@ -54,7 +54,7 @@ class User
    property :created_at, Time
    property :name, String
    property :screen_name, String
-   property :id, Integer, :key => true
+   property :id_str, String, :key => true
    has n, :tweets
 end
 
@@ -92,7 +92,7 @@ class Timeline
                user.created_at = a["created_at"]
                user.name = a["name"]
                user.screen_name = a["screen_name"]
-               user.id = a["id"]
+               user.id_str = a["id_str"]
             end
             if status["coordinates"].nil?
                coordinate = nil
@@ -118,12 +118,12 @@ class Timeline
                :text => status["text"],
                :contributors => status["contributors"],
                :retweeted => status["retweeted"],
-               :in_reply_to_user_id => status["in_reply_to_user_id"],
-               :in_reply_to_status_id => status["in_reply_to_status_id"],
+               :in_reply_to_user_id_str => status["in_reply_to_user_id_str"],
+               :in_reply_to_status_id_str => status["in_reply_to_status_id_str"],
                :source => status["source"],
                :favorited => status["favorited"],
                :retweet_count => status["retweet_count"],
-               :id => status["id"],
+               :id_str => status["id_str"],
                :in_reply_to_screen_name => status["in_reply_to_screen_name"],
                :user => user,
                :coordinate => coordinate,
