@@ -1,2 +1,2 @@
-require "sin"
-run Sinatra :Application
+require "src/sin"
+run Sinatra::Application
