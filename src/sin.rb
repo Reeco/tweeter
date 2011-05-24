@@ -41,7 +41,7 @@ get '/search/searching' do
          @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)
       end
    else
-      @error = "ERROR! Type not selected."
+      @err = "ERROR! Type not selected."
    end
    haml :show_result
 end
