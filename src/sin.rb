@@ -7,8 +7,10 @@ get '/' do
 end
 
 get '/fetching_tweets' do
-   DataMapper.auto_migrate!
    screen = params[:screen_name]
+   if screen.nil?
+      haml :error
+   DataMapper.auto_migrate!
    timeline = Timeline.new(screen)
    timeline.fetch_tweets
    redirect '/search'
