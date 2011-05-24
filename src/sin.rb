@@ -8,7 +8,7 @@ end
 
 get '/fetching_tweets' do
    screen = params[:screen_name]
-   if screen.nil?
+   if screen.empty?
       haml :error
    else
       DataMapper.auto_migrate!
