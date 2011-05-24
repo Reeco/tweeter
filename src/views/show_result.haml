@@ -5,6 +5,6 @@
 - if @tweets
    - @tweets.each do |i|
       %p= i.created_at.to_s + " ---> " + i.text
-   else
-      %p
-         ERROR! Please select the type and fill keyword box properly
+- else
+   %p
+      ERROR! Please select the type and fill keyword box properly
