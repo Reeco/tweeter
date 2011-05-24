@@ -1,8 +1,7 @@
 require "rubygems"
 require "data_mapper"
-require "dm-types"
 require "sinatra"
-require "net/http.rb"
+require "net/http"
 require "json"
 
 DataMapper::Logger.new($stdout, :debug)

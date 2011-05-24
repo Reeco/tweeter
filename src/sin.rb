@@ -1,7 +1,5 @@
 require "rubygems"
-require "data_mapper"
-require "sinatra"
-require "haml"
+require "bundler/setup"
 require "timeline_sq"
 
 get '/' do   
