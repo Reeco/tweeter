@@ -1,7 +1,43 @@
 require "rubygems"
+require "data_mapper"
 require "sinatra"
+require "haml"
+require "timeline_sq"
 
-get '/' do
+get '/' do   
    haml :tweeter
-   "hiiiiiii!!!!!"
 end
+
+get '/fetching_tweets' do
+   DataMapper.auto_migrate!
+   screen = params[:screen_name]
+   timeline = Timeline.new(screen)
+   timeline.fetch_tweets
+   redirect '/search'
+end
+
+get '/search' do
+   @tweets_all = Tweet.all(:order => [:created_at.desc])
+   haml :tweeter_search
+end
+
+@search = nil
+   
+get '/search/searching' do
+   typ = params[:typ]
+   key = params[:key]
+   if typ.eql?("text")
+      @tweets = Tweet.all(:text.like => "%#{key}%")
+   elsif typ.eql?("created_at")
+      date = Date.parse(key)      
+      puts date
+      from_time = DateTime.new(date.year, date.month, date.day, 0, 0, 0)
+      to_time   = DateTime.new(date.year, date.month, date.day, 23, 59, 59)
+      @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)
+   end
+   haml :show_result
+end
+
+#get '/search/result' do
+#   haml :show_result
+#end

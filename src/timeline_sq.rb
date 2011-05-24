@@ -10,13 +10,13 @@ DataMapper.setup(:default, "sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
 
 class Tweet
    include DataMapper::Resource
-   property :created_at, Time
+   property :created_at, DateTime
    property :text, String, :length => 200
    property :contributors, String, :required => false
    property :retweeted, Boolean, :required => false
    property :in_reply_to_user_id, Integer, :required => false
-   property :source, String, :required => false, :length => 200
    property :in_reply_to_status_id, Integer, :required => false
+   property :source, String, :required => false, :length => 200
    property :favorited, Boolean, :required => false
    property :retweet_count, Integer
    property :id, Integer, :key => true
@@ -68,7 +68,7 @@ class Timeline
    
    def fetch_tweets
       user = nil
-      (1...3).each do |i|
+      (1...10).each do |i|
          begin
             resp = Net::HTTP.get_response(URI.parse("http://api.twitter.com/1/statuses/user_timeline.json?page=#{i}&screen_name="+@screen_name))
          rescue Exception
@@ -80,6 +80,7 @@ class Timeline
          coordinate = nil
          place = nil
          tweet = nil
+         source = nil
          tweets.each {|status|
             if(user.nil?) 
                user = User.new 
@@ -114,13 +115,13 @@ class Timeline
                place.country = status["place"]["country"]
             end
             tweet = Tweet.create( 
-               :created_at => Time.parse(status["created_at"]),
+               :created_at => DateTime.parse(status["created_at"]),
                :text => status["text"],
                :contributors => status["contributors"],
                :retweeted => status["retweeted"],
                :in_reply_to_user_id => status["in_reply_to_user_id"],
-               :source => status["source"],
                :in_reply_to_status_id => status["in_reply_to_status_id"],
+               :source => status["source"],
                :favorited => status["favorited"],
                :retweet_count => status["retweet_count"],
                :id => status["id"],
@@ -132,11 +133,11 @@ class Timeline
             user.tweets << tweet 
             if coordinate and !Coordinate.get(coordinate.coordinates)
                coordinate.tweets << tweet 
-               place.save if place
+               place.save
             end
             if place and !Place.get(place.id)
                place.tweets << tweet 
-              coordinate.save if coordinate
+               coordinate.save
             end
          }
          user.save
@@ -151,9 +152,3 @@ class Timeline
 end
 
 DataMapper.finalize
-DataMapper.auto_migrate!
-
-puts "Enter the screen_name: "
-timeline = Timeline.new(gets)
-puts "Fetching your tweets...  Please wait for a while...."
-timeline.fetch_tweets
