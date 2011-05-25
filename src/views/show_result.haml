@@ -2,12 +2,8 @@
    Tweeter Search Result
 %hr
 
-- if !@tweets.empty? 
+- if !@err.empty?
+   %p= @err
+- else 
    - @tweets.each do |i|
       %p= i.created_at.to_s + " ---> " + i.text
-- else
-   - if @err.empty?
-      %p
-         No match found!!
-   - else
-      %p= @err
