@@ -16,4 +16,6 @@ Latest tweets are:
 - if @tweets_all.length>20
    - (0..20).each do |i|
       %p= @tweets_all[i].created_at.to_s + " ---> " + @tweets_all[i].text
-
+- else 
+   - (0..@tweets_all.length).each do |i|
+      %p= @tweets_all[i].created_at.to_s + " ---> " + @tweets_all[i].text
