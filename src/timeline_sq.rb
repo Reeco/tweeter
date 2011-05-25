@@ -67,6 +67,7 @@ class Timeline
    
    def fetch_tweets
       user = nil
+      err = nil
       (1...10).each do |i|
          begin
             resp = Net::HTTP.get_response(URI.parse("http://api.twitter.com/1/statuses/user_timeline.json?page=#{i}&screen_name="+@screen_name))
@@ -75,6 +76,10 @@ class Timeline
             Process.exit
          else
             tweets = JSON.parse(resp.body)
+         end
+         if tweets.include?("error")
+            err = "No user with this screen_name" 
+            break
          end
          coordinate = nil
          place = nil
@@ -140,13 +145,8 @@ class Timeline
             end
          }
          user.save
-         puts tweet.errors.each { |e| puts e}
-         puts coordinate.errors.each { |e| puts e} if coordinate
-         puts user.errors.each { |e| puts e}
-         puts place.errors.each { |e| puts e} if place
-         puts user.errors.each { |e| puts e }
-         puts user.errors[0]
       end
+      return err
    end
 end
 

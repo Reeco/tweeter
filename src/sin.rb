@@ -9,12 +9,17 @@ end
 get '/fetching_tweets' do
    screen = params[:screen_name]
    if screen.empty?
+      @err = "ERROR! Screen name cannot be blank"
       haml :err
    else
       DataMapper.auto_migrate!
       timeline = Timeline.new(screen)
-      timeline.fetch_tweets
-      redirect '/search'
+      @err = timeline.fetch_tweets
+      if @err.nil?
+         redirect '/search'
+      else
+         haml :err
+      end
    end
 end
 
