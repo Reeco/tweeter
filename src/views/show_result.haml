@@ -2,7 +2,7 @@
    Tweeter Search Result
 %hr
 
-- if !@err.empty?
+- if @err
    %p= @err
 - else 
    - @tweets.each do |i|
