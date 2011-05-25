@@ -52,7 +52,7 @@ get '/search/searching' do
             from_time = DateTime.new(date.year, date.month, date.day, 0, 0, 0)
             to_time   = DateTime.new(date.year, date.month, date.day, 23, 59, 59)
             @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)          
-            @err = "o match found." if @tweets.empty?
+            @err = "No match found." if @tweets.empty?
          end
       else
          @err = "ERROR! Please enter the date in correct format."
