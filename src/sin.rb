@@ -33,6 +33,7 @@ get '/search/searching' do
          @err = "ERROR! Please enter the keyword."
       else
          @tweets = Tweet.all(:text.like => "%#{key}%")
+         @err = "No match found." if @tweets.empty?
       end
    elsif typ.eql?("created_at")
       if key.empty?
@@ -49,7 +50,3 @@ get '/search/searching' do
    end
    haml :show_result
 end
-
-#get '/search/result' do
-#   haml :show_result
-#end
