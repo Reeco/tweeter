@@ -44,10 +44,15 @@ get '/search/searching' do
       if key.empty?
          @err = "ERROR! Date cannot be empty."
       elsif key =~ /\d\d\d\d-\d\d-\d\d/
-         date = Date.parse(key)      
-         from_time = DateTime.new(date.year, date.month, date.day, 0, 0, 0)
-         to_time   = DateTime.new(date.year, date.month, date.day, 23, 59, 59)
-         @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)          
+         date = Date.parse(key)
+         tod = Date.today
+         if date.year>tod.year || date.year <1 || date.month <1 || date.month >tod.month || date.day <1 || date.day >tod.day 
+            @err = "ERROR! Invalid Date."     
+         else
+            from_time = DateTime.new(date.year, date.month, date.day, 0, 0, 0)
+            to_time   = DateTime.new(date.year, date.month, date.day, 23, 59, 59)
+            @tweets = Tweet.all(:created_at.gte => from_time, :created_at.lte => to_time)          
+         end
       else
          @err = "ERROR! Please enter the date in correct format."
       end
