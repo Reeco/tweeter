@@ -1,6 +1,10 @@
 require "rubygems"
+require "data_mapper"
 require "bundler/setup"
 require "src/timeline_sq"
+
+DataMapper::Logger.new($stdout, :debug)
+DataMapper.setup(:default, ENV["DATABASE_URL"]||"sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
 
 get '/' do   
    haml :tweeter
@@ -12,6 +16,7 @@ get '/fetching_tweets' do
       @err = "ERROR! Screen name cannot be blank"
       haml :err
    else
+      DataMapper.finalize
       DataMapper.auto_migrate!
       timeline = Timeline.new(screen)
       @err = timeline.fetch_tweets

@@ -1,62 +1,7 @@
 require "rubygems"
 require "data_mapper"
-require "sinatra"
 require "net/http"
 require "json"
-
-DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, ENV["DATABASE_URL"]||"sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
-
-class Tweet
-   include DataMapper::Resource
-   property :created_at, DateTime
-   property :text, String, :length => 200
-   property :contributors, String, :required => false
-   property :retweeted, Boolean, :required => false
-   property :in_reply_to_user_id_str, String, :required => false
-   property :in_reply_to_status_id_str, String, :required => false
-   property :source, String, :required => false, :length => 200
-   property :favorited, Boolean, :required => false
-   property :retweet_count, Integer
-   property :id_str, String, :key => true
-   property :in_reply_to_screen_name, String, :required => false
-   belongs_to :coordinate, :required => false
-   belongs_to :place, :required => false
-   belongs_to :user
-end
-
-class Coordinate
-   include DataMapper::Resource
-   property :type, String
-   property :coordinates, String, :key => true
-   has n, :tweets
-end
-
-class Place
-   include DataMapper::Resource
-   property :url, String, :length => 200
-   property :street_address, String, :length => 200
-   property :full_name, String, :length => 200
-   property :name, String
-   property :country_code, String
-   property :id, String, :key => true
-   property :country, String
-   has n, :tweets 
-end
-
-class User
-   include DataMapper::Resource
-   property :lang, String
-   property :statuses_count, Integer
-   property :description, String, :required => false, :length => 200
-   property :followers_count, Integer
-   property :time_zone, String, :required => false
-   property :created_at, Time
-   property :name, String
-   property :screen_name, String
-   property :id_str, String, :key => true
-   has n, :tweets
-end
 
 class Timeline
    attr_accessor :user_id
@@ -150,4 +95,3 @@ class Timeline
    end
 end
 
-DataMapper.finalize
