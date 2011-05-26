@@ -1,6 +1,6 @@
 require "rubygems"
 require "data_mapper"
-require "src/tweet"
+require "src/models/tweet"
 
 class User
    include DataMapper::Resource

@@ -1,8 +1,9 @@
 require "rubygems"
 require "data_mapper"
-require "src/coordinate"
-require "src/place"
-require "src/user"
+require "src/models/coordinate"
+require "src/models/place"
+require "src/models/user"
+
 class Tweet
    include DataMapper::Resource
    property :created_at, DateTime
