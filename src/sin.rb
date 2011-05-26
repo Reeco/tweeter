@@ -2,20 +2,20 @@ require "rubygems"
 require "sinatra"
 require "bundler/setup"
 require "src/timeline_sq"
-require "src/models/tweet"
+require "../models/tweet"
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV["DATABASE_URL"]||"sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
 
 get '/' do   
-   haml :tweeter
+   haml :"../views/tweeter"
 end
 
 get '/fetching_tweets' do
    screen = params[:screen_name]
    if screen.empty?
       @err = "ERROR! Screen name cannot be blank"
-      haml :err
+      haml :"../views/err"
    else
       DataMapper.finalize
       DataMapper.auto_migrate!
@@ -24,14 +24,14 @@ get '/fetching_tweets' do
       if @err.nil?
          redirect '/search'
       else
-         haml :err
+         haml :"../views/err"
       end
    end
 end
 
 get '/search' do
    @tweets_all = Tweet.all(:order => [:created_at.desc])
-   haml :tweeter_search
+   haml :"../views/tweeter_search"
 end
 
 @search = nil
@@ -66,5 +66,5 @@ get '/search/searching' do
    else
       @err = "ERROR! Type not selected."
    end
-   haml :show_result
+   haml :"../views/show_result"
 end
