@@ -1,5 +1,5 @@
 require "rubygems"
-require "data_mapper"
+require "sinatra"
 require "bundler/setup"
 require "src/timeline_sq"
 
