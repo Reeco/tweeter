@@ -2,6 +2,7 @@ require "rubygems"
 require "data_mapper"
 require "net/http"
 require "json"
+require "src/tweet"
 
 class Timeline
    attr_accessor :user_id
