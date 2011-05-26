@@ -1,0 +1,9 @@
+%h3{:style => "text-align:center;"}
+   Tweeter Search Result
+%hr
+
+- if @err
+   %p= @err
+- else 
+   - @tweets.each do |i|
+      %p= i.created_at.to_s + " ---> " + i.text
