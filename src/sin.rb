@@ -2,6 +2,7 @@ require "rubygems"
 require "sinatra"
 require "bundler/setup"
 require "src/timeline_sq"
+require "tweet.rb"
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV["DATABASE_URL"]||"sqlite3://#{(Dir.pwd).chomp("src")}db/tweets.db")
